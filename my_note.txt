@@ -1,0 +1,126 @@
+//list of api found online:
+
+// city link
+https://www.citylinkexpress.com/wp-json/wp/v2/getShippingRate
+
+payload (form data) -------->
+origin_country: MY
+origin_state: Selangor
+origin_postcode: 42700
+destination_country: MY
+destination_state: Selangor
+destination_postcode: 32610
+length: 10
+width: 10
+height: 10
+selected_type: 1
+parcel_weight: 1
+document_weight: 
+
+result:
+{
+    "req": {
+        "data": {
+            "rate": 13,
+            "code": "00",
+            "api_days": 1,
+            "final_days": 2,
+            "dayString": "16-04-2025",
+            "weekendDays": 0,
+            "message": ""
+        },
+        "headers": [],
+        "status": 200
+    }
+}
+
+//j&t express
+https://www.jtexpress.my/shipping-rates
+
+payload:
+_token: LhW6fyM1cf1A3fegBlczAJwarM55Dmgx0aN7Uld9
+shipping_rates_type: domestic
+sender_postcode: 42700
+receiver_postcode: 32610
+destination_country: BWN
+shipping_type: EZ
+weight: 1
+length: 10
+width: 10
+height: 10
+item_value: 
+
+result:
+{
+    "req": {
+        "data": {
+            "rate": 13,
+            "code": "00",
+            "api_days": 1,
+            "final_days": 2,
+            "dayString": "16-04-2025",
+            "weekendDays": 0,
+            "message": ""
+        },
+        "headers": [],
+        "status": 200
+    }
+}
+
+
+// poslaju api 
+
+https://www-api.pos.com.my/api/price
+payload (json):
+{
+  "country": "Malaysia",
+  "weight": 1,
+  "postcodeFrom": 42700,
+  "postcodeTo": 32610
+}
+result:
+[
+    {
+        "first": "7.2",
+        "next": "0.8",
+        "amount": "7.2",
+        "maxWeight": "2",
+        "totalAmount": "10.03",
+        "zone": "2",
+        "fuelCharge": "1.08",
+        "handlingCharge": "1.08",
+        "SST": "0.57",
+        "PosCoverage": "0.1",
+        "stateFrom": "Selangor",
+        "stateTo": "Perak",
+        "Town": "Bota/ UiTM Seri Iskandar",
+        "ODA": "1PM",
+        "ODAPrice": "0",
+        "SLA": "Within two working days",
+        "isDomestic": true,
+        "name": "POS LAJU",
+        "estimateDelivery": "1 - 5 working days"
+    }
+]
+
+// skynet
+https://skynet.com.my/calculate-domestic-rates
+
+url params: ?FromPostcode=42700&ToPostcode=32610&Weight=1&Length=10&Width=10&Height=10&ShipmentType=Parcels
+
+result:
+{
+    "status_code": "00",
+    "message": "Success",
+    "data": {
+        "FromZone": "ZONE 1",
+        "ToZone": "ZONE 1",
+        "Cost": 8.5,
+        "BaseCharge": 8,
+        "SST": 0.48,
+        "ErrorMessage": ""
+    }
+}
+
+
+
