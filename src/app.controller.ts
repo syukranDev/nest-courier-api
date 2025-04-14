@@ -2,11 +2,16 @@ import { Controller, Get, Post, Body, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
 import { TokenGuard } from './utils/token.guard';
 
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiBody } from '@nestjs/swagger';
+import { RateRequestDto, RateResponseDto } from './swagger/rate.dto';
+import { TokenResponseDto } from './swagger/token.dto';
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
+  @ApiOperation({ summary: 'Get welcome message' })
+  @ApiResponse({ status: 200, description: 'Welcome message', type: Object })
   getRoot(): { message: string } {
     return { message: "Welcome to the App, this is the root path" };
   }
