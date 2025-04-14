@@ -124,3 +124,6 @@ result:
 
 
 
+// docker
+
+docker-compose up --build

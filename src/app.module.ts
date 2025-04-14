@@ -5,18 +5,26 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { ShippingRate } from './model/app.model'; 
 import { Token } from './model/token.model'; 
 
+// For testing in container
+// console.log({
+//   host: process.env.POSTGRES_HOST,
+//   user: process.env.POSTGRES_USER,
+//   password: process.env.POSTGRES_PASSWORD,
+//   database: process.env.POSTGRES_DB,
+// })
+
 @Module({
   imports: [
     SequelizeModule.forRoot({
       dialect: 'postgres',
-      host: 'localhost',
+      host: process.env.POSTGRES_HOST,
       port: 5432,
-      username: 'postgres',
-      password: '12345', 
-      database: 'shipping_rates_db',
+      username: process.env.POSTGRES_USER,
+      password: process.env.POSTGRES_PASSWORD, 
+      database: process.env.POSTGRES_DB,
       models: [ShippingRate, Token],
       autoLoadModels: true,
-      synchronize: true, // Creates tables automatically (disable in production)
+      synchronize: true, 
     }),
     SequelizeModule.forFeature([ShippingRate, Token]),
   ],

@@ -1,7 +1,7 @@
 import { Injectable , HttpException, HttpStatus} from '@nestjs/common';
 import axios from 'axios';
-import { Sequelize, Op } from 'sequelize'; // Import Op from sequelize
-import { Sequelize as SequelizeTs } from 'sequelize-typescript'; // Alias sequelize-typescript
+import { Sequelize, Op } from 'sequelize';
+import { Sequelize as SequelizeTs } from 'sequelize-typescript';
 import { ShippingRate } from './model/app.model';
 import { Token } from './model/token.model';
 import * as crypto from 'crypto';
@@ -10,24 +10,17 @@ import * as crypto from 'crypto';
 export class AppService {
   constructor(private sequelize: SequelizeTs) {}
 
-  //API 1 - test
+  //API 1 - test pls ignore
   getConnectedMessage(): { message: string } {
     return { message: "Connected to the server" };
   }
 
-  //API 2 - test
-  // processPayloadAndParams(payload: any, params: Record<string, string>): { payload: any; params: Record<string, string> } {
-  //   if (!payload && Object.keys(params).length === 0) {
-  //     throw new Error('No payload or URL parameters provided');
-  //   }
-  //   return { payload, params };
-  // }
-
+  //API 3 - generate token
   async generateToken(): Promise<{ token: string; expiresAt: string }> {
     try {
       const token = crypto.randomBytes(32).toString('hex');
       const expiresAt = new Date();
-      expiresAt.setHours(expiresAt.getHours() + 24); // 24-hour expiration
+      expiresAt.setHours(expiresAt.getHours() + 24);
 
       await Token.create({
         token,
@@ -40,7 +33,7 @@ export class AppService {
     }
   }
 
-  //API 3 - actual shipping rates API
+  //API 4 - actual shipping rates API
   async fetchShippingRates(payload: { senderState: string, senderPostcode: string; receiverState: string, receiverPostcode: string, weight: string }): Promise<{ data: { courier: string; rate: number }[], debug: { courier: string, debugMsg: string}[] }> {
     try {
 
@@ -172,7 +165,6 @@ export class AppService {
       return { data, debug : debugMsg };
     }
     catch (error) {
-      // console.error('Error fetching shipping rates:', error);
       if (error instanceof HttpException) { //notedev: ensure final error is thrown from the API logic if hitting 422
         throw error;
       }

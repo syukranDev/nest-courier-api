@@ -23,18 +23,6 @@ export class AppController {
     return this.appService.getConnectedMessage();
   }
 
-  // @Post('app')
-  // postPayloadAndParams(
-  //   @Body() payload: any,
-  //   @Query() params: Record<string, string>,
-  // ): { payload: any; params: Record<string, string> } {
-  //   try {
-  //     return this.appService.processPayloadAndParams(payload, params);
-  //   } catch (error) {
-  //     throw new HttpException(error.message, HttpStatus.UNPROCESSABLE_ENTITY);
-  //   }
-  // }
-
   @Post('app/generate-token')
   @ApiOperation({ summary: 'Generate a new authentication token' })
   @ApiResponse({ status: 200, description: 'Generated token and expiration', type: TokenResponseDto })
