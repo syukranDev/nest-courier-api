@@ -7,7 +7,7 @@ export class AppController {
 
   @Get()
   getRoot(): { message: string } {
-    return { message: "Welcome to the App" };
+    return { message: "Welcome to the App, this is the root path" };
   }
 
   @Get('app')
@@ -15,15 +15,26 @@ export class AppController {
     return this.appService.getConnectedMessage();
   }
 
-  @Post('app')
-  postPayloadAndParams(
-    @Body() payload: any,
-    @Query() params: Record<string, string>,
-  ): { payload: any; params: Record<string, string> } {
+  // @Post('app')
+  // postPayloadAndParams(
+  //   @Body() payload: any,
+  //   @Query() params: Record<string, string>,
+  // ): { payload: any; params: Record<string, string> } {
+  //   try {
+  //     return this.appService.processPayloadAndParams(payload, params);
+  //   } catch (error) {
+  //     throw new HttpException(error.message, HttpStatus.UNPROCESSABLE_ENTITY);
+  //   }
+  // }
+  
+  @Post('app/rates')
+  async getShippingRates(@Body() payload: { senderState: string, senderPostcode: string; receiverState: string, receiverPostcode: string, weight: string  }): Promise<{ data: { courier: string; rate: number }[], debug: { courier: string, debugMsg: string}[] }> {
     try {
-      return this.appService.processPayloadAndParams(payload, params);
+      return await this.appService.fetchShippingRates(payload);
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.UNPROCESSABLE_ENTITY);
+      if (error instanceof HttpException) { throw error; } //notedev: ensure final error is thrown from the API logic if hitting 422
+        
+      throw new HttpException('Failed to fetch shipping rates', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }
