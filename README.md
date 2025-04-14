@@ -120,20 +120,24 @@ You should see a response like:
   ```json
   {
     "data": [
-      {
-        "courier": "Citylink",
-        "rate": 12.5
-      },
-      {
-        "courier": "PosLaju",
-        "rate": 10.0
-      }
+        {
+            "courier": "Citylink",
+            "rate": 18
+        },
+        {
+            "courier": "Poslaju",
+            "rate": 10.58
+        },
+        {
+            "courier": "Skynet",
+            "rate": 12.7
+        }
     ],
     "debug": [
-      {
-        "courier": "J&T",
-        "debugMsg": "Request failed with status code 403"
-      }
+        {
+            "courier": "J&T",
+            "debugMsg": "Request failed with status code 419"
+        }
     ]
   }
   ```
