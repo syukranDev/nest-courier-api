@@ -137,10 +137,10 @@ You should see a response like:
     ]
   }
   ```
-- **Note**: <br>
-The payload is limited to the fields shown above (`senderState`, `senderPostcode`, `receiverState`, `receiverPostcode`, and `weight`). Other parameters, such as dimensions WxLxH, country, are hardcoded in the backend for simplicity since every external courier API have different payload. <br></br>
-`debug` object included in the response to indicate its external API is down or inaccessible for whatever reason.
-
+- **Notes**:
+  1. The payload is limited to the fields shown above (`senderState`, `senderPostcode`, `receiverState`, `receiverPostcode`, and `weight`). Other parameters, such as dimensions, are hardcoded in the backend for simplicity since every external courier API has different payload requirements.
+  2. **Caching**: The API uses a database-based caching mechanism. If a request with the same payload (sender/receiver details and weight) was made within the last 24 hours, the cached result will be returned instead of making new requests to external courier APIs.
+  3. The `debug` object in the response indicates if any external API is down or inaccessible for any reason.
 
 ---
 
