@@ -1,5 +1,6 @@
-import { Controller, Get, Post, Body, Query, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
+import { TokenGuard } from './utils/token.guard';
 
 @Controller()
 export class AppController {
@@ -27,7 +28,13 @@ export class AppController {
   //   }
   // }
 
+  @Post('app/generate-token')
+  async generateToken(): Promise<{ token: string; expiresAt: string }> {
+    return await this.appService.generateToken();
+  }
+
   @Post('app/rates')
+  @UseGuards(TokenGuard)
   async getShippingRates(@Body() payload: { senderState: string, senderPostcode: string; receiverState: string, receiverPostcode: string, weight: string  }): Promise<{ data: { courier: string; rate: number }[], debug: { courier: string, debugMsg: string}[] }> {
     return await this.appService.fetchShippingRates(payload);
   }
