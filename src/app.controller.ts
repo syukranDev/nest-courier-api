@@ -39,7 +39,7 @@ export class AppController {
   @ApiResponse({ status: 200, description: 'Shipping rates and debug info', type: RateResponseDto })
   @ApiResponse({ status: 401, description: 'Unauthorized (missing or invalid token)' })
   @ApiResponse({ status: 422, description: 'Invalid payload' })
-  async getShippingRates(@Body() payload: { senderState: string, senderPostcode: string; receiverState: string, receiverPostcode: string, weight: string  }): Promise<{ data: { courier: string; rate: number }[], debug: { courier: string, debugMsg: string}[] }> {
+  async getShppingRates(@Body() payload: { senderState: string, senderPostcode: string; receiverState: string, receiverPostcode: string, weight: string  }): Promise<{ data: { courier: string; rate: number }[], debug: { courier: string, debugMsg: string}[] }> {
     return await this.appService.fetchShippingRates(payload);
   }
 }
