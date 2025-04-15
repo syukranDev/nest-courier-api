@@ -89,7 +89,20 @@ export class AppService {
         postcodeFrom: senderPostcode,
         postcodeTo: receiverPostcode
       };
-  
+
+      const trackingMalaysiaCompilationPayload = {
+        from_country: 'MY',
+        from_postcode: senderPostcode,
+        group_id: 1,
+        height: '10',
+        length: '10',
+        width: '10',
+        to_country: "MY",
+        to_postcode: receiverPostcode,
+        type: "1",
+        weight: weight.toString(),
+      }
+
       const oneDayAgo = new Date();
       oneDayAgo.setHours(oneDayAgo.getHours() - 24);
   
@@ -156,11 +169,41 @@ export class AppService {
             debugMsg.push({ courier: 'Skynet', debugMsg: e.message });
             return null;
           }),
+
+          axios
+            .post('https://seller.tracking.my/api/services', trackingMalaysiaCompilationPayload, {
+              headers: { 'Content-Type': 'application/json' },
+            })
+            .then(res => {
+              console.log(res.data.services);
+              const filteredCouriers = res.data.services
+                .filter((service: any) => 
+                  service.courier_title !== 'J&T Express' && 
+                  service.courier_title !== 'Pos Malaysia'
+                )
+                .reduce((acc, service: any) => {
+                  const courierTitle = service.courier_title.trim().toLowerCase();
+                  if (!acc.some(item => item.courier.trim().toLowerCase() === courierTitle)) {
+                    acc.push({
+                      courier: service.courier_title,
+                      price: service.price,
+                    });
+                  }
+                  return acc;
+                }, []);
+          
+              console.log(filteredCouriers);
+              return filteredCouriers;
+            })
+            .catch(e => {
+              debugMsg.push({ courier: 'Tracking Malaysia (Compilation of Couriers)', debugMsg: e.message });
+              return null;
+            })
       ];
   
       const results = await Promise.all(requests);
-      const data = results.filter(result => result !== null);
-  
+      const data = results.filter(result => result !== null).flat();
+
       await ShippingRate.create({
         senderState,
         senderPostcode,
