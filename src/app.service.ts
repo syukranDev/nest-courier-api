@@ -1,17 +1,23 @@
-import { Injectable , HttpException, HttpStatus} from '@nestjs/common';
+import { Injectable , HttpException, HttpStatus, Inject} from '@nestjs/common';
 import axios from 'axios';
 import { Sequelize, Op } from 'sequelize';
 import { Sequelize as SequelizeTs } from 'sequelize-typescript';
 import { ShippingRate } from './model/app.model';
 import { Token } from './model/token.model';
 import * as crypto from 'crypto';
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
+import { Logger } from 'winston';
 
 @Injectable()
 export class AppService {
-  constructor(private sequelize: SequelizeTs) {}
+  constructor(
+    private sequelize: SequelizeTs,
+    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
+  ) {}
 
   //API 1 - test pls ignore
   getConnectedMessage(): { message: string } {
+    this.logger.info('Health check endpoint accessed');
     return { message: "Connected to the server" };
   }
 
@@ -27,8 +33,10 @@ export class AppService {
         expiresAt,
       });
 
+      this.logger.info('Token generated successfully', { token, expiresAt });
       return { token, expiresAt: expiresAt.toISOString() };
     } catch (error) {
+      this.logger.error('Failed to generate token', { error: error.message });
       throw new HttpException('Failed to generate token', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
@@ -36,6 +44,7 @@ export class AppService {
   //API 4 - actual shipping rates API
   async fetchShippingRates(payload: { senderState: string, senderPostcode: string; receiverState: string, receiverPostcode: string, weight: string }): Promise<{ data: { courier: string; rate: number }[], debug: { courier: string, debugMsg: string}[] }> {
     try {
+      this.logger.info('Fetching shipping rates', { payload });
 
       let { senderState, senderPostcode, receiverState, receiverPostcode, weight } = payload;
       if (!payload) throw new HttpException('Missing payload', HttpStatus.UNPROCESSABLE_ENTITY)
@@ -99,7 +108,7 @@ export class AppService {
   
       if (cachedResult) {
         console.log('Using cached result...')
-        // console.log(cachedResult);
+        this.logger.info('Shipping rates fetched successfully - using cached result', {});
         return { data: cachedResult.dataValues.data, debug: cachedResult.dataValues.debug };
       }
   
@@ -162,13 +171,16 @@ export class AppService {
         debug: debugMsg,
       });
   
+      this.logger.info('Shipping rates fetched successfully - calling new external APIs');
       return { data, debug : debugMsg };
     }
     catch (error) {
       if (error instanceof HttpException) { //notedev: ensure final error is thrown from the API logic if hitting 422
+        this.logger.error('API Error', {error});
         throw error;
       }
 
+      this.logger.error('Failed to fetch shipping rates', { error: error.message });
       throw new HttpException('Failed to fetch shipping rates', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
