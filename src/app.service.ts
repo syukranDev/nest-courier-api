@@ -175,7 +175,7 @@ export class AppService {
               headers: { 'Content-Type': 'application/json' },
             })
             .then(res => {
-              console.log(res.data.services);
+              // console.log(res.data.services);
               const filteredCouriers = res.data.services
                 .filter((service: any) => 
                   service.courier_title !== 'J&T Express' && 
@@ -192,7 +192,7 @@ export class AppService {
                   return acc;
                 }, []);
           
-              console.log(filteredCouriers);
+              // console.log(filteredCouriers);
               return filteredCouriers;
             })
             .catch(e => {

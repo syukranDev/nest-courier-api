@@ -17,7 +17,7 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
-
+      - ./logs:/app/logs # notdev: persist logs dir
   db:
     image: postgres:14
     environment:
