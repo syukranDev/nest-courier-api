@@ -164,6 +164,48 @@ You should see a response like:
 
 ---
 
+### Couriers and APIs
+
+The `fetchShippingRates` API retrieves shipping rates from multiple external courier APIs. Below is the list of couriers and the APIs used to fetch their rates:
+
+1. **Citylink**  
+   - **API**: `https://www.citylinkexpress.com/wp-json/wp/v2/getShippingRate`  
+   - **Description**: Fetches shipping rates directly from Citylink's API.
+
+2. **J&T Express**  
+   - **API**: `https://www.jtexpress.my/shipping-rates`  
+   - **Description**: Fetches domestic shipping rates from J&T Express.
+
+3. **Poslaju**  
+   - **API**: `https://www-api.pos.com.my/api/price`  
+   - **Description**: Fetches shipping rates from Poslaju's API.
+
+4. **Skynet**  
+   - **API**: `https://skynet.com.my/calculate-domestic-rates`  
+   - **Description**: Fetches domestic shipping rates from Skynet's API.
+
+5. **Tracking Malaysia Compilation**  
+   - **API**: `https://seller.tracking.my/api/services`  
+   - **Description**: This API aggregates shipping rates from multiple couriers, including:
+     - **Posstore**
+     - **Sendy Express**
+     - **Best Express**
+     - **Whallo**
+     - **LineClear Express**
+     - **Flash Express**
+     - **NinjaVan Malaysia**
+     - **DHL Ecommerce**
+
+   - **Note**: Since this API provides rates for multiple couriers, the response is filtered to ensure unique courier names are included in the final result.
+
+---
+
+### Additional Notes
+- The `Tracking Malaysia Compilation` API acts as an aggregator and provides rates for various couriers. Duplicate courier names are filtered, and only one entry per courier is included in the final response.
+- If any API fails to respond, the error is logged, and the failure details are included in the `debug` section of the response.
+
+---
+
 ## Stopping the Application
 
 When you're done testing, stop the containers:
