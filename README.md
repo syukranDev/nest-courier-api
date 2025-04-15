@@ -122,15 +122,47 @@ You should see a response like:
     "data": [
         {
             "courier": "Citylink",
-            "rate": 18
+            "rate": 24
         },
         {
             "courier": "Poslaju",
-            "rate": 10.58
+            "rate": 11.96
         },
         {
             "courier": "Skynet",
-            "rate": 12.7
+            "rate": 14.85
+        },
+        {
+            "courier": "Posstore",
+            "price": 1600
+        },
+        {
+            "courier": "Sendy Express",
+            "price": 1110
+        },
+        {
+            "courier": "LineClear Express",
+            "price": 1500
+        },
+        {
+            "courier": "Whallo",
+            "price": 1550
+        },
+        {
+            "courier": "Best Express",
+            "price": 1400
+        },
+        {
+            "courier": "Flash Express",
+            "price": 1900
+        },
+        {
+            "courier": "NinjaVan Malaysia",
+            "price": 820
+        },
+        {
+            "courier": "DHL Ecommerce",
+            "price": 1450
         }
     ],
     "debug": [
