@@ -67,9 +67,6 @@ You should see a response like:
 ```bash
   http://localhost:3000/api
  ```
-![image](https://github.com/user-attachments/assets/d43da66e-d3b6-43fb-b7a8-71f000381a7a)
-
-
 ### Option 2: Via Curl/Postman
 ### 1. **Generate Token**
 - **Endpoint**: `POST /app/generate-token`
