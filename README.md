@@ -1,4 +1,4 @@
-# Assessment - Courier API
+# Courier API (Malaysia-based)
 
 This is a NestJS-Typescript based API for managing courier services, including fetching shipping rates and generating authentication tokens.
 
